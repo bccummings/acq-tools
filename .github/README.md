@@ -1,5 +1,5 @@
 # acq-tools
-Toolkit for analyzing physiologic data collected via BIOPAC's AcqKnowledge software.
+Toolkit for managing and analyzing physiologic data collected via BIOPAC's AcqKnowledge software.
 
 ## Introduction
 

@@ -71,7 +71,6 @@ def parse_data(data):
 
         [setattr(event, key, np.nan) for key in event.__dict__.keys() if getattr(event, key) == None]
 
-
         event_markers['label'].append(event.text)
         event_markers['sample_index'].append(event.sample_index)
         event_markers['type_code'].append(event.type_code)
@@ -90,4 +89,4 @@ if __name__ == '__main__':
     d = parse_data(data)
     d = {'d': d} # wrap into one MATLAB struct rather than multiple variables
 
-    sio.savemat(args.outfile, d)
+    sio.savemat(args.outfile, d, oned_as='column')

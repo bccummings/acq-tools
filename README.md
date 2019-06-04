@@ -41,7 +41,7 @@ To load the MAT file from within MATLAB, use of the `loadfile.m` function is rec
 From within MATLAB:
 
 ```matlab
-d = loadfile(file.mat);
+d = loadfile('file.mat');
 ```
 
 ## Navigating the `d` structure

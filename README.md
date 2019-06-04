@@ -22,7 +22,9 @@ source env/bin/activate
 pip install -r requirements.txt
 ```
 
-## Example Usage: Loading an ACQ file
+## Loading an ACQ file
+
+### Converting ACQ into MATLAB
 
 To convert an ACQ file into a MATLAB file, use the `acq2mat.py` script. It takes the ACQ filename as a positional argument.
 
@@ -36,6 +38,8 @@ Optionally, an output file can be specified using the `-o` or `--outfile` flags.
 python acq2mat /path/to/file.acq -o /new/output/path.mat
 ```
 
+### Opening the file in MATLAB
+
 To load the MAT file from within MATLAB, use of the `loadfile.m` function is recommended. The `scipy.io.savemat()` function, around which the `acq2mat.py` script is centered, is unable to save array data into a MATLAB table. Thus, the event markers must be saved as a MATLAB `struct` object. The `loadfile.m` MATLAB function converts this struct to a more human-readable `table` object, as well as converts the various character arrays into `cellstr` objects.
 
 From within MATLAB:
@@ -44,7 +48,7 @@ From within MATLAB:
 d = loadfile('file.mat');
 ```
 
-## Navigating the `d` structure
+### Navigating the `d` structure
 
 As required by many of the previously constructed analysis tools and pipelines, the data is stored in an object termed `d`. This is a 1-by-1 `struct` object which contains a field for each channel recorded by the Biopac. The fields are named according to how they were initialized in the ACQ file, with the exception that the channel name is altered to be lower case and follow valid MATLAB variable conventions (must start with a letter, and can only contain letters, numbers, and the `_` character).
 
@@ -62,7 +66,7 @@ Additionally, there is an `event_markers` field under the `d` object, which (if 
 `channel_number`: if the marker is associated with a specific channel, it shows up here. Based on our usage thus far, this is usually empty.
 `channel`: the name of the associated channel. Again, usually empty.
 
-### Usage example
+#### Usage example
 
 The following MATLAB code will plot an arterial blood pressure waveform saved under the name `abp`. The x-axis will be in seconds. Additionally, it will annotate the plot with the event markers.
 

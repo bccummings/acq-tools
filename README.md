@@ -1,9 +1,9 @@
 # acq-tools
-Toolkit for analyzing physiologic data collected via Biopac AcqKnowledge software.
+Toolkit for analyzing physiologic data collected via BIOPAC's AcqKnowledge software.
 
 ## Introduction
 
-Much of the data from the clinical and pre-clinical groups at MCIRCC is acquired using the [Biopac](https://www.biopac.com) AcqKnowledge software package, however, many of the tools and analysis techniques developed by MCIRCC members are implemented in MATLAB and other programming languages that cannot work with the AcqKnowledge (ACQ) fiels directly. Thus, this repository is designed as an extension of the excellent [`bioread`](https://github.com/uwmadison-chm/bioread) package developed by [Nate Vack](https://github.com/njvack), which wraps ACQ files into a MATLAB structure compatible with MCIRCC's tools. As the repository grows, other transformations and operations that are common accross MCRICC projects may be added.
+Much of the data from the clinical and pre-clinical groups at MCIRCC is acquired using the [BIOPAC](https://www.biopac.com) AcqKnowledge software package, however, many of the tools and analysis techniques developed by MCIRCC members are implemented in MATLAB and other programming languages that cannot work with the AcqKnowledge (ACQ) fiels directly. Thus, this repository is designed as an extension of the excellent [`bioread`](https://github.com/uwmadison-chm/bioread) package developed by [Nate Vack](https://github.com/njvack), which wraps ACQ files into a MATLAB structure compatible with MCIRCC's tools. As the repository grows, other transformations and operations that are common accross MCRICC projects may be added.
 
 ## Getting started
 
@@ -50,7 +50,7 @@ d = loadfile('file.mat');
 
 ### Navigating the `d` structure
 
-As required by many of the previously constructed analysis tools and pipelines, the data is stored in an object termed `d`. This is a 1-by-1 `struct` object which contains a field for each channel recorded by the Biopac. The fields are named according to how they were initialized in the ACQ file, with the exception that the channel name is altered to be lower case and follow valid MATLAB variable conventions (must start with a letter, and can only contain letters, numbers, and the `_` character).
+As required by many of the previously constructed analysis tools and pipelines, the data is stored in an object termed `d`. This is a 1-by-1 `struct` object which contains a field for each channel recorded by the BIOPAC. The fields are named according to how they were initialized in the ACQ file, with the exception that the channel name is altered to be lower case and follow valid MATLAB variable conventions (must start with a letter, and can only contain letters, numbers, and the `_` character).
 
 Each of these channels contains the same three fields:  
 * `wave`: the waveform data, saved as an n-by-one double.  
@@ -78,9 +78,13 @@ x = d.event_markers.sample_index / d.abp.Fs; % create x-coordinates for text ann
 y = ones(height(d.event_markers), 1) * mean(d.abp.wave); % create y-coordinates for text annotations
 text(x, y, d.event_markers.label, 'Rotation', 90) % plot text annotations
 ```
+## Contributing
 
+In addition to providing tools to extract and analyze ACQ data files, this repository is intended to have a dual purpose in helping contributers both learn and teach git techniques. I encourage contributors to use the GitHub [Issue](https://github.com/bccummings/acq-tools/issues) and [Project](https://github.com/bccummings/acq-tools/projects/1) tools to submit and track even small proposed changes, and to use pull requests rather than committing to the master branch. Please see
+[CONTRIBUTING.md](https://github.com/bccummings/acq-tools/blob/master/README.md) for more information.
 
+## Acknowledgements and Disclaimers
 
+Many of the tools found in this repository, most saliently `acq2mat.py`, rely heavily on the expertly-constructed [`bioread`](https://github.com/uwmadison-chm/bioread) package authored primarily by [Nate Vack](https://github.com/njvack). This package is responsible for loading and parsing the ACQ file – the `acq2mat` tool in this repository simply wraps the data into a prettier format more consistent with MCIRCC analysis tools.
 
-
-
+Additionally, neither the authors nor this repository have any affiliation with or endorsement from [BIOPAC Systems, Inc.](https://www.biopac.com), and note that both BIOPAC and AcqKnowledge are trademarks of this company.

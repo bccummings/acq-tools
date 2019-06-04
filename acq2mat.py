@@ -8,8 +8,10 @@ import sys
 import argparse
 import re
 import bioread
+import numpy as np
 import pandas as pd
 from scipy import io as sio
+import pdb
 
 def argument_parser(argv):
     '''Parse input from the command line'''
@@ -20,7 +22,8 @@ def argument_parser(argv):
         help='ACQ file to convert')
 
     parser.add_argument('-o', '--outfile',
-        help='Filename for MATLAB file output')
+        help='Filename for MATLAB file output',
+        required=False)
 
     args = parser.parse_args()
 
@@ -56,20 +59,27 @@ def parse_data(data):
     # Add event markers
     valid_events = [i for i in data.event_markers if i.type_code != 'nrto']
 
-    event_markers = pd.DataFrame()
+    event_markers = {}
+    event_markers['label'] = []
+    event_markers['sample_index'] = []
+    event_markers['type_code'] = []
+    event_markers['type'] = []
+    event_markers['channel_number'] = []
+    event_markers['channel'] = []
 
-    c = 0
     for event in valid_events:
-        event_markers[c, 'label'] = event.text
-        event_markers[c, 'sample_index'] = event.sample_index
-        event_markers[c, 'type_code'] = event.type_code
-        event_markers[c, 'type'] = event.type
-        event_markers[c, 'channel_number'] = event.channel_number
-        event_markers[c, 'channel'] = event.channel
 
-        c+=1
+        [setattr(event, key, np.nan) for key in event.__dict__.keys() if getattr(event, key) == None]
 
-    d['event_markers'] = event_markers.to_dict()
+
+        event_markers['label'].append(event.text)
+        event_markers['sample_index'].append(event.sample_index)
+        event_markers['type_code'].append(event.type_code)
+        event_markers['type'].append(event.type)
+        event_markers['channel_number'].append(event.channel_number)
+        event_markers['channel'].append(event.channel)
+
+    d['event_markers'] = event_markers
 
     return d
 

@@ -9,13 +9,13 @@ Much of the data from the clinical and pre-clinical groups at MCIRCC is acquired
 
 To use the tools included in this repository, open up a command line window and clone it using:
 
-```{bash}
+```bash
 git clone https://github.com/bccummings/acq-tools
 ```
 
 Then, create a Python 3 virtual environment and load in the required packages. The code below moves the user into the repository's directory, then constructs and activates a virtual environment. Lastly, it loads the required dependancies listed in the `requirements.txt`.
 
-```{bash}
+```bash
 cd acq-tools
 python3 -m venv env
 source env/bin/activate
@@ -26,13 +26,13 @@ pip install -r requirements.txt
 
 To convert an ACQ file into a MATLAB file, use the `acq2mat.py` script. It takes the ACQ filename as a positional argument.
 
-```{bash}
+```bash
 python acq2mat /path/to/file.acq
 ```
 
 Optionally, an output file can be specified using the `-o` or `--outfile` flags. If no output directory is specified, the script places the new output file in the same directory as the input file, with the `.acq` extension changed to `.mat`.
 
-```{bash}
+```bash
 python acq2mat /path/to/file.acq -o /new/output/path.mat
 ```
 
@@ -40,7 +40,7 @@ To load the MAT file from within MATLAB, use of the `loadfile.m` function is rec
 
 From within MATLAB:
 
-```{matlab}
+```matlab
 d = loadfile(file.mat);
 ```
 
@@ -66,15 +66,14 @@ Additionally, there is an `event_markers` field under the `d` object, which (if 
 
 The following MATLAB code will plot an arterial blood pressure waveform saved under the name `abp`. The x-axis will be in seconds. Additionally, it will annotate the plot with the event markers.
 
-```{matlab}
+```matlab
 t = ( 1:length(d.abp.wave) ) / d.abp.Fs; % time vector
 plot(t, d.abp.wave); % plot arterial blood pressure
 
 x = d.event_markers.sample_index / d.abp.Fs; % create x-coordinates for text annotations
 y = ones(height(d.event_markers), 1) * mean(d.abp.wave); % create y-coordinates for text annotations
 text(x, y, d.event_markers.label, 'Rotation', 90) % plot text annotations
-
-
+```
 
 
 

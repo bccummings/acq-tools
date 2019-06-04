@@ -19,7 +19,8 @@ def argument_parser(argv):
     parser = argparse.ArgumentParser(description='ACQ2MAT: a tool to extract ACQ files.')
 
     parser.add_argument('file',
-        help='ACQ file to convert')
+        help='ACQ file to convert',
+        nargs='+')
 
     parser.add_argument('-o', '--outfile',
         help='Filename for MATLAB file output',
@@ -28,7 +29,7 @@ def argument_parser(argv):
     args = parser.parse_args()
 
     if not args.outfile:
-        args.outfile = args.file.replace('.acq', '.mat')
+        args.outfile = args.file[0].replace('.acq', '.mat')
 
     return args
 
@@ -57,8 +58,6 @@ def parse_data(data):
         }
 
     # Add event markers
-    valid_events = [i for i in data.event_markers if i.type_code != 'nrto']
-
     event_markers = {}
     event_markers['label'] = []
     event_markers['sample_index'] = []
@@ -67,6 +66,7 @@ def parse_data(data):
     event_markers['channel_number'] = []
     event_markers['channel'] = []
 
+    valid_events = [i for i in data.event_markers if i.type_code != 'nrto']
     for event in valid_events:
 
         [setattr(event, key, np.nan) for key in event.__dict__.keys() if getattr(event, key) == None]
@@ -82,11 +82,40 @@ def parse_data(data):
 
     return d
 
+def cat_multiple_files(d_list):
+
+    d = d_list[0]
+
+    for d_new in d_list[1:]:
+
+        offset = max([len(d[i]['wave']) for i in d.keys() if i != 'event_markers'])
+
+        for key in d.keys():
+
+            if key == 'event_markers':
+                for key2 in d['event_markers'].keys():
+                    if key2 == 'sample_index':
+                        d['event_markers']['sample_index'] = d['event_markers']['sample_index'] + [i+offset for i in d_new['event_markers']['sample_index']] # increment sample number
+                    else:
+                        d['event_markers'][key2] = d['event_markers'][key2] + d_new['event_markers'][key2]
+
+            else:
+                d[key]['wave'] = np.append(d[key]['wave'], d_new[key]['wave'])
+
+    return d
+
+
 if __name__ == '__main__':
 
     args = argument_parser(sys.argv[1:])
-    data = bioread.read_file(args.file)
-    d = parse_data(data)
+    data = [bioread.read_file(i) for i in args.file] # read each file specified in command line
+    d_list = [parse_data(i) for i in data] # parse the data and return in a list of dictionaries
+
+    if len(d_list) >= 2: # concatenate files if there are more than one
+        d = cat_multiple_files(d_list)
+    else:
+        d = d_list[0];
+
     d = {'d': d} # wrap into one MATLAB struct rather than multiple variables
 
     sio.savemat(args.outfile, d, oned_as='column', do_compression=True)

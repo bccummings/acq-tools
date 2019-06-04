@@ -32,7 +32,13 @@ To convert an ACQ file into a MATLAB file, use the `acq2mat.py` script. It takes
 python acq2mat /path/to/file.acq
 ```
 
-Optionally, an output file can be specified using the `-o` or `--outfile` flags. If no output directory is specified, the script places the new output file in the same directory as the input file, with the `.acq` extension changed to `.mat`.
+In the case where the BIOPAC acquisition is stopped and started, these files can easily be concatenated together. Simply specify multiple file names in the order that they should be concatenated, and `acq2mat.py` will take care of the rest. After concatenation, the original breakpoints of the files are specified by the "Segment 1" event markers. Note that there is no adjustment for the time between stopping and resuming acquisition – they are appended directly.
+
+```bash
+python acq2mat /path/to/file_01.acq /path/to/file_02.acq
+```
+
+Optionally, an output file can be specified using the `-o` or `--outfile` flags. If no output directory is specified, the script places the new output file in the same directory as the input file, with the `.acq` extension changed to `.mat`. If the user has specified multiple files, then the first filename is used.
 
 ```bash
 python acq2mat /path/to/file.acq -o /new/output/path.mat
@@ -47,7 +53,6 @@ From within MATLAB:
 ```matlab
 d = loadfile('file.mat');
 ```
-
 ### Navigating the `d` structure
 
 As required by many of the previously constructed analysis tools and pipelines, the data is stored in an object termed `d`. This is a 1-by-1 `struct` object which contains a field for each channel recorded by the BIOPAC. The fields are named according to how they were initialized in the ACQ file, with the exception that the channel name is altered to be lower case and follow valid MATLAB variable conventions (must start with a letter, and can only contain letters, numbers, and the `_` character).

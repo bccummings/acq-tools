@@ -27,10 +27,15 @@ function d = loadfile(filename)
 % 
 % d = loadfile(filename);
 % plot( (1:length(d.abp.wave))/d.abp.Fs, d.abp.wave)
+% xlabel('Time (seconds)')
+% ylabel(sprintf('ABP (%s)', d.abp.unit))
 %
 % 2. Annotate with event markers
 % 
-% text(d.event_markers.sample_index, zeros(height(d.event_markers), 1), d.event_markers.label, 'Rotation', 90)
+% text(d.event_markers.sample_index/Fs, ...
+%     zeros(height(d.event_markers), 1), ...
+%     d.event_markers.label, ...
+%     'Rotation', 90)
 %
 
 load(filename, 'd');

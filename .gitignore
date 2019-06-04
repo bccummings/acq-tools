@@ -28,6 +28,7 @@
 *.sqlite3
 *.m~
 __pycache__
+data/
 
 # OS generated files #
 ######################

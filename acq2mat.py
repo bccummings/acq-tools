@@ -89,4 +89,4 @@ if __name__ == '__main__':
     d = parse_data(data)
     d = {'d': d} # wrap into one MATLAB struct rather than multiple variables
 
-    sio.savemat(args.outfile, d, oned_as='column')
+    sio.savemat(args.outfile, d, oned_as='column', do_compression=True)

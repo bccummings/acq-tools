@@ -81,7 +81,7 @@ text(x, y, d.event_markers.label, 'Rotation', 90) % plot text annotations
 ## Contributing
 
 In addition to providing tools to extract and analyze ACQ data files, this repository is intended to have a dual purpose in helping contributers both learn and teach git techniques. I encourage contributors to use the GitHub [Issue](https://github.com/bccummings/acq-tools/issues) and [Project](https://github.com/bccummings/acq-tools/projects/1) tools to submit and track even small proposed changes, and to use pull requests rather than committing to the master branch. Please see
-[CONTRIBUTING.md](https://github.com/bccummings/acq-tools/blob/master/README.md) for more information.
+[CONTRIBUTING.md](https://github.com/bccummings/acq-tools/blob/master/docs/CONTRIBUTING.md) for more information.
 
 ## Acknowledgements and Disclaimers
 

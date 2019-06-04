@@ -72,7 +72,7 @@ def parse_data(data):
         [setattr(event, key, np.nan) for key in event.__dict__.keys() if getattr(event, key) == None]
 
         event_markers['label'].append(event.text)
-        event_markers['sample_index'].append(event.sample_index)
+        event_markers['sample_index'].append(event.sample_index+1) # +1 since MATLAB is indexed from 1, not 0
         event_markers['type_code'].append(event.type_code)
         event_markers['type'].append(event.type)
         event_markers['channel_number'].append(event.channel_number)

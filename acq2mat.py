@@ -43,6 +43,12 @@ def clean(s):
     s = re.sub('^[^a-zA-Z]+', '', s) # first character must be a letter
 
     return s
+def add_start_time(event_marker_str):
+    r = re.compile('\d{4}-\d{2}-\d{2}')
+    day = r.findall(event_marker_str)
+    time = re.compile('\d{2}:\d{2}:\d{2}.\d{2}')
+    start_time = time.findall(event_marker_str)
+    return {'day': day, 'time': start_time}
 
 def parse_data(data):
     '''Read in ACQ file using njvack's bioread package (https://github.com/uwmadison-chm/bioread)'''
@@ -116,6 +122,7 @@ if __name__ == '__main__':
     else:
         d = d_list[0];
 
+    d['start_time'] = add_start_time(str(data[0].event_markers[0]))
     d = {'d': d} # wrap into one MATLAB struct rather than multiple variables
 
     sio.savemat(args.outfile, d, oned_as='column', do_compression=True)

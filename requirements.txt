@@ -1,4 +1,4 @@
-bioread==1.0.4
+bioread==2.1.0
 cycler==0.10.0
 kiwisolver==1.1.0
 matplotlib==3.0.3
